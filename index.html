@@ -397,7 +397,28 @@
             transition: opacity 0.3s;
             pointer-events: none;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            max-width: 350px;
+            word-wrap: break-word;
         }
+        
+        /* debug console */
+        .debug-console {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: #0f0;
+            font-family: monospace;
+            font-size: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            z-index: 999;
+            max-width: 300px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        
         @media (max-width: 760px) {
             .hero-content h1 { font-size: 2.5rem; }
             .container { padding: 0 1.5rem; }
@@ -407,6 +428,7 @@
             .hero-actions { justify-content: center; }
             .section-title:after { left: 50%; transform: translateX(-50%); width: 80px; }
             .section-title { text-align: center; display: block; }
+            .toast-msg { bottom: 20px; right: 20px; left: 20px; max-width: none; }
         }
     </style>
 </head>
@@ -451,9 +473,7 @@
     <section id="skills">
         <div class="container">
             <h2 class="section-title">Tech Arsenal & Tools</h2>
-            <div class="skills-grid" id="skillsGrid">
-                <!-- Skills injected via JS -->
-            </div>
+            <div class="skills-grid" id="skillsGrid"></div>
         </div>
     </section>
 
@@ -461,9 +481,7 @@
     <section id="projects">
         <div class="container">
             <h2 class="section-title">Featured Projects</h2>
-            <div class="projects-grid" id="projectsGrid">
-                <!-- dynamic projects from JS -->
-            </div>
+            <div class="projects-grid" id="projectsGrid"></div>
         </div>
     </section>
 
@@ -497,9 +515,14 @@
                         <div class="form-group">
                             <textarea rows="3" id="msgInput" placeholder="Write a message..."></textarea>
                         </div>
-                        <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; justify-content: center;"><i class="fas fa-comment-dots"></i> Send Message</button>
+                        <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-comment-dots"></i> Send Message
+                        </button>
                     </form>
-                    <p style="font-size: 0.8rem; margin-top: 1rem; color:#608b9e;"><i class="fas fa-database"></i> Messages are securely stored in Firebase Realtime Database.</p>
+                    <p style="font-size: 0.8rem; margin-top: 1rem; color:#608b9e;">
+                        <i class="fas fa-database"></i> Messages are securely stored in Firebase Realtime Database.
+                        <span id="firebaseStatus" style="display: inline-block; margin-left: 8px;"></span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -512,16 +535,16 @@
         <p style="margin-top: 6px; font-size: 0.8rem;"><i class="fas fa-sync-alt"></i> Real-time contact form connected</p>
     </div>
 </footer>
-<div id="toastMsg" class="toast-msg">✨ Message received, Meet will reply soon!</div>
+<div id="toastMsg" class="toast-msg"></div>
 
 <!-- Firebase SDKs and Backend Integration -->
 <script type="module">
-    // Import Firebase modules with the provided configuration
+    // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getDatabase, ref, push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    import { getDatabase, ref, push, set, serverTimestamp, get, child } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
   
-    // Your web app's Firebase configuration (provided by user)
+    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyBe1xZx1YKZIjvPy-jkpAwRzZxsQ_ZPCHk",
         authDomain: "meet-asher.firebaseapp.com",
@@ -533,14 +556,47 @@
         measurementId: "G-8VCB598BT0"
     };
   
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const database = getDatabase(app);
+    // Initialize Firebase with error handling
+    let database;
+    let firebaseInitialized = false;
+    const statusSpan = document.getElementById('firebaseStatus');
     
-    console.log("🔥 Firebase initialized — Contact form will push data to Realtime Database");
+    try {
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        database = getDatabase(app);
+        firebaseInitialized = true;
+        console.log("✅ Firebase initialized successfully!");
+        if(statusSpan) {
+            statusSpan.innerHTML = '<i class="fas fa-check-circle" style="color: #4caf50;"></i> Connected';
+            statusSpan.style.color = '#4caf50';
+        }
+        
+        // Test database connection by writing a test entry
+        const testRef = ref(database, 'connection_test');
+        set(testRef, {
+            timestamp: serverTimestamp(),
+            message: "Portfolio connection test",
+            userAgent: navigator.userAgent
+        }).then(() => {
+            console.log("✅ Test write to Firebase successful!");
+        }).catch((err) => {
+            console.warn("⚠️ Test write failed (might be permissions):", err.message);
+            if(statusSpan) {
+                statusSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Check permissions';
+                statusSpan.style.color = '#ff9800';
+            }
+        });
+        
+    } catch (error) {
+        console.error("❌ Firebase initialization error:", error);
+        if(statusSpan) {
+            statusSpan.innerHTML = '<i class="fas fa-times-circle"></i> Connection error';
+            statusSpan.style.color = '#f44336';
+        }
+    }
     
-    // ---------- DOM Elements for Contact Form ----------
+    // DOM Elements
     const contactForm = document.getElementById('contactForm');
     const nameInput = document.getElementById('nameInput');
     const emailInput = document.getElementById('emailInput');
@@ -552,98 +608,116 @@
     
     function showToast(message, isError = false) {
         if(toastMsg) {
-            toastMsg.textContent = message || (isError ? "⚠️ Something went wrong" : "✨ Message received, Meet will reply soon!");
-            toastMsg.style.background = isError ? '#b91c1c' : '#1f3b4c';
+            toastMsg.textContent = message;
+            toastMsg.style.background = isError ? '#d32f2f' : '#1f3b4c';
             toastMsg.style.opacity = '1';
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toastMsg.style.opacity = '0';
-                toastMsg.style.background = '#1f3b4c'; // reset
-            }, 4000);
+            }, 5000);
         }
+        console.log(isError ? "❌ " : "✅ ", message);
     }
     
-    // Function to save contact message to Firebase Realtime Database
+    // Save message to Firebase
     async function saveMessageToFirebase(name, email, message) {
+        if (!database) {
+            throw new Error("Firebase not initialized. Please check your configuration.");
+        }
+        
         try {
-            // Create a new reference under "contacts" node
+            // Create reference under "contacts" node
             const contactsRef = ref(database, 'contacts');
             const newMessageRef = push(contactsRef);
             
-            // Set the data with timestamp
-            await set(newMessageRef, {
-                name: name,
-                email: email,
-                message: message,
+            const messageData = {
+                name: name.trim(),
+                email: email.trim(),
+                message: message.trim(),
                 timestamp: serverTimestamp(),
+                clientTimestamp: new Date().toISOString(),
                 read: false,
-                submittedAt: new Date().toISOString()
-            });
+                userAgent: navigator.userAgent
+            };
             
+            console.log("Attempting to save message:", messageData);
+            await set(newMessageRef, messageData);
+            
+            console.log("✅ Message saved successfully! Key:", newMessageRef.key);
             return { success: true, id: newMessageRef.key };
+            
         } catch (error) {
-            console.error("Firebase write error:", error);
+            console.error("Firebase write error details:", error);
             throw error;
         }
     }
     
     // Handle form submission
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim();
-        const message = msgInput.value.trim();
-        
-        // Basic validation
-        if(!name) {
-            showToast("❌ Please enter your name", true);
-            return;
-        }
-        if(!email) {
-            showToast("❌ Email address is required", true);
-            return;
-        }
-        if(!email.includes('@') || !email.includes('.')) {
-            showToast("📧 Please provide a valid email address", true);
-            return;
-        }
-        if(!message) {
-            showToast("💬 Please write a message before sending", true);
-            return;
-        }
-        
-        // Disable button to prevent double submission
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...';
-        
-        try {
-            // Save to Firebase Realtime Database
-            const result = await saveMessageToFirebase(name, email, message);
-            console.log("Message stored successfully with ID:", result.id);
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            // Success toast
-            showToast(`🎉 Thanks ${name}! Your message has been saved to Firebase. Meet will get back soon.`);
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const message = msgInput.value.trim();
             
-            // Reset form fields
-            contactForm.reset();
+            // Validation
+            if(!name) {
+                showToast("❌ Please enter your name", true);
+                return;
+            }
+            if(!email) {
+                showToast("❌ Email address is required", true);
+                return;
+            }
+            if(!email.includes('@') || !email.includes('.')) {
+                showToast("📧 Please provide a valid email address", true);
+                return;
+            }
+            if(!message) {
+                showToast("💬 Please write a message before sending", true);
+                return;
+            }
             
-            // Optional: store last message in localStorage for demo
-            localStorage.setItem('lastContactMessage', JSON.stringify({
-                name, email, message, date: new Date().toISOString()
-            }));
+            if (!firebaseInitialized || !database) {
+                showToast("❌ Firebase connection issue. Please refresh and try again.", true);
+                return;
+            }
             
-        } catch (error) {
-            console.error("Submission error:", error);
-            showToast("❌ Server error. Could not save message. Please try again later.", true);
-        } finally {
-            // Re-enable button
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-comment-dots"></i> Send Message';
-        }
-    });
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending to Firebase...';
+            
+            try {
+                const result = await saveMessageToFirebase(name, email, message);
+                showToast(`🎉 Thanks ${name}! Your message has been saved to Firebase Database.`);
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Log success for debugging
+                console.log("Message ID:", result.id);
+                console.log("View in Firebase Console: https://console.firebase.google.com/project/meet-asher/database/meet-asher-default-rtdb/data");
+                
+            } catch (error) {
+                console.error("Submission error details:", error);
+                let errorMsg = "❌ Failed to save message. ";
+                if (error.message.includes("permission")) {
+                    errorMsg += "Firebase permissions denied. Please check database rules.";
+                } else if (error.message.includes("network")) {
+                    errorMsg += "Network error. Check your internet connection.";
+                } else {
+                    errorMsg += error.message;
+                }
+                showToast(errorMsg, true);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-comment-dots"></i> Send Message';
+            }
+        });
+    }
     
-    // ---------- Additional Portfolio Features (Skills, Projects, Greeting, Nav) ----------
+    // ---------- Portfolio Features ----------
     
     // Dynamic Greeting
     function updateGreeting() {
@@ -654,7 +728,7 @@
         let greet = '';
         if(hour < 12) greet = 'Good morning, creative soul! 🌅';
         else if(hour < 18) greet = 'Good afternoon, keep building! ☀️';
-        else greet = 'Good evening, let’s craft something amazing 🌙';
+        else greet = 'Good evening, let\'s craft something amazing 🌙';
         const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute:'2-digit' });
         greetingSpan.innerHTML = `${greet} · ${timeStr}`;
     }
@@ -779,8 +853,23 @@
         footerYear.innerHTML = `© ${currentYear} Meet P Asher — Designed with <i class="fas fa-heart" style="color:#1f6e8c;"></i> & Firebase backend`;
     }
     
-    // console log success
-    console.log("%c✅ Meet P Asher Portfolio — Firebase Realtime Database ready. Messages will be stored in 'contacts' node.", "color: #1f6e8c; font-size: 14px; font-weight: bold;");
+    console.log("%c🚀 Portfolio Ready! Messages will be stored in Firebase 'contacts' node.", "color: #1f6e8c; font-size: 14px; font-weight: bold;");
+    console.log("%c📋 To view messages, go to: https://console.firebase.google.com/project/meet-asher/database/meet-asher-default-rtdb/data", "color: #2196f3;");
 </script>
+
+<!-- Instructions for Firebase Rules -->
+<div style="display: none;">Firebase Database Rules needed:
+{
+  "rules": {
+    "contacts": {
+      ".read": "auth != null",
+      ".write": true
+    },
+    "connection_test": {
+      ".write": true
+    }
+  }
+}
+</div>
 </body>
 </html>
