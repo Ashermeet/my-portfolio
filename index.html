@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Meet P Asher · Creative Technologist Portfolio</title>
+    <!-- Google Fonts & simple CSS reset -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fbfdfe;
+            color: #1a2a3f;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(251, 253, 254, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1F3B4C, #2C5A6E);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            transition: transform 0.2s;
+        }
+
+        .logo span {
+            background: none;
+            color: #2C5A6E;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e4e;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #1f6e8c;
+            border-bottom: 2px solid #1f6e8c;
+            padding-bottom: 4px;
+        }
+
+        /* buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1f6e8c;
+            color: white;
+            padding: 0.7rem 1.6rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.25s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #1f6e8c;
+            color: #1f6e8c;
+        }
+
+        .btn-outline:hover {
+            background: #1f6e8c;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:hover {
+            background: #0e4b64;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(31,110,140,0.2);
+        }
+
+        /* hero section */
+        .hero {
+            padding: 5rem 0 3rem 0;
+        }
+
+        .hero-grid {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+        }
+
+        .hero-content {
+            flex: 1.2;
+        }
+
+        .hero-badge {
+            background: #e1f0f5;
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1f6e8c;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-highlight {
+            background: linear-gradient(120deg, #d9f0f5 0%, #d9f0f5 40%, transparent 60%);
+            padding: 0 0.2rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #2c5068;
+            max-width: 550px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .hero-image {
+            flex: 0.8;
+            background: linear-gradient(145deg, #d9eef5, #c2dfea);
+            border-radius: 38% 62% 70% 30% / 42% 40% 60% 58%;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 25px 40px -15px rgba(0,0,0,0.1);
+        }
+
+        .avatar-icon {
+            font-size: 9rem;
+            color: #1f5e7a;
+            filter: drop-shadow(4px 8px 12px rgba(0,0,0,0.1));
+        }
+
+        /* section general */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: #1f6e8c;
+            border-radius: 4px;
+        }
+
+        /* skills grid */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background: white;
+            padding: 1rem 1.8rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.03);
+            border: 1px solid #e2edf2;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .skill-card i {
+            color: #1f6e8c;
+            font-size: 1.3rem;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+            border-color: #9ac7d9;
+            box-shadow: 0 15px 25px -12px rgba(0,0,0,0.1);
+        }
+
+        /* projects cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eef3f7;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -12px rgba(31,110,140,0.2);
+        }
+
+        .project-img {
+            background: #d2e9f0;
+            padding: 2rem;
+            text-align: center;
+            font-size: 3rem;
+            color: #1f6e8c;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0.8rem 0;
+        }
+
+        .tag {
+            background: #eef3f7;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1f5e7a;
+        }
+
+        /* contact form & social */
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            background: #ffffffd9;
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border: 1px solid #e2edf2;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-form {
+            flex: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #cfdfe6;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            transition: 0.2s;
+            background: #fefefe;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #1f6e8c;
+            box-shadow: 0 0 0 3px rgba(31,110,140,0.2);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            font-size: 1.8rem;
+            color: #2c5a6e;
+            transition: 0.2s;
+        }
+
+        .social-icon:hover {
+            color: #1f6e8c;
+            transform: scale(1.1);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #e2edf2;
+            margin-top: 1rem;
+            color: #5b7e94;
+        }
+
+        /* dynamic greeting */
+        #dynamicGreeting {
+            font-weight: 500;
+            background: #eaf4f8;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+        }
+
+        /* message toast */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f3b4c;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 760px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .container { padding: 0 1.5rem; }
+            .nav-container { flex-direction: column; align-items: flex-start; }
+            .nav-links { gap: 1.2rem; flex-wrap: wrap; }
+            .hero-grid { flex-direction: column-reverse; text-align: center; }
+            .hero-actions { justify-content: center; }
+            .section-title:after { left: 50%; transform: translateX(-50%); width: 80px; }
+            .section-title { text-align: center; display: block; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="container nav-container">
+        <div class="logo">Meet<span>PAsher</span> <i class="fas fa-code" style="font-size: 1.6rem; color:#1f6e8c;"></i></div>
+        <ul class="nav-links">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+    </div>
+</div>
+
+<main>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-smile-wink"></i> available for collaborations</div>
+                <h1>Hi, I'm Meet P Asher<br><span class="hero-highlight">Creative Developer & Designer</span></h1>
+                <p>Building immersive digital experiences with clean code, modern UI, and a passion for innovation. Based in India, working worldwide.</p>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary"><i class="fas fa-arrow-down"></i> View work</a>
+                    <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> Get in touch</a>
+                </div>
+                <div style="margin-top: 1.8rem;" id="dynamicGreeting">
+                    <i class="fas fa-clock"></i> <span id="greetingText"></span>
+                </div>
+            </div>
+            <div class="hero-image">
+                <i class="fas fa-user-astronaut avatar-icon"></i>
+                <p style="margin-top: 10px; font-weight: 500;">Meet P Asher · creative coder</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title">Tech Arsenal & Tools</h2>
+            <div class="skills-grid" id="skillsGrid">
+                <!-- Skills injected via JS but also static fallback -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- dynamic projects from JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact + fun fact -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Connect</h2>
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <h3><i class="fas fa-paper-plane"></i> Say hello</h3>
+                    <p style="margin: 1rem 0 0.5rem 0">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                    <div style="margin: 1.5rem 0">
+                        <p><i class="fas fa-envelope" style="margin-right: 8px; color:#1f6e8c;"></i> meet.asher@creativestudio.com</p>
+                        <p><i class="fas fa-map-marker-alt" style="margin-right: 8px; color:#1f6e8c;"></i> Mumbai, India / Remote</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="nameInput" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="emailInput" placeholder="Email address" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="3" id="msgInput" placeholder="Write a message..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;"><i class="fas fa-comment-dots"></i> Send Message</button>
+                    </form>
+                    <p style="font-size: 0.8rem; margin-top: 1rem; color:#608b9e;"><i class="fas fa-laugh-squint"></i> No spam, just creative vibes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>© 2025 Meet P Asher — Designed with <i class="fas fa-heart" style="color:#1f6e8c;"></i> & interactive JS</p>
+        <p style="margin-top: 6px; font-size: 0.8rem;"><i class="fas fa-sync-alt"></i> Current local time & inspiration mode active</p>
+    </div>
+</footer>
+<div id="toastMsg" class="toast-msg">✨ Message received, Meet will reply soon!</div>
+
+<script>
+    (function() {
+        // ---------- DYNAMIC GREETING (JavaScript real time) ----------
+        function updateGreeting() {
+            const greetingSpan = document.getElementById('greetingText');
+            if(!greetingSpan) return;
+            const now = new Date();
+            const hour = now.getHours();
+            let greet = '';
+            if(hour < 12) greet = 'Good morning, creative soul! 🌅';
+            else if(hour < 18) greet = 'Good afternoon, keep building! ☀️';
+            else greet = 'Good evening, let’s craft something amazing 🌙';
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute:'2-digit' });
+            greetingSpan.innerHTML = `${greet} · ${timeStr}`;
+        }
+        updateGreeting();
+        setInterval(updateGreeting, 60000);
+
+        // ---------- SKILLS DATA (meet's profile) ----------
+        const skillsList = [
+            { name: "JavaScript (ES6+)", icon: "fab fa-js" },
+            { name: "React & Next.js", icon: "fab fa-react" },
+            { name: "HTML5/CSS3/Tailwind", icon: "fab fa-css3-alt" },
+            { name: "Node.js / Express", icon: "fab fa-node-js" },
+            { name: "UI/UX Design", icon: "fas fa-pencil-ruler" },
+            { name: "Figma & Framer", icon: "fab fa-figma" },
+            { name: "Python / Flask", icon: "fab fa-python" },
+            { name: "Git & Github", icon: "fab fa-git-alt" }
+        ];
+
+        const skillsContainer = document.getElementById('skillsGrid');
+        if(skillsContainer) {
+            skillsContainer.innerHTML = '';
+            skillsList.forEach(skill => {
+                const card = document.createElement('div');
+                card.className = 'skill-card';
+                card.innerHTML = `<i class="${skill.icon}"></i> ${skill.name}`;
+                skillsContainer.appendChild(card);
+            });
+        }
+
+        // ---------- PROJECTS DATA (Portfolio of Meet) ----------
+        const projectsData = [
+            {
+                title: "Nebula AI Dashboard",
+                description: "Interactive analytics dashboard with AI insights, real-time data visualizations and dark mode.",
+                tags: ["React", "D3.js", "Tailwind"],
+                icon: "fas fa-chart-line"
+            },
+            {
+                title: "Wanderlog Travel App",
+                description: "A minimalist travel planner with map integration, itinerary builder and user auth.",
+                tags: ["Vue.js", "Node.js", "MongoDB"],
+                icon: "fas fa-map-marked-alt"
+            },
+            {
+                title: "Portfolio 3.0",
+                description: "Creative developer portfolio with WebGL animations and dynamic theme switcher.",
+                tags: ["Three.js", "GSAP", "CSS Grid"],
+                icon: "fas fa-cube"
+            },
+            {
+                title: "CodeCollab Hub",
+                description: "Real-time collaborative code editor with room-based pairing and syntax highlighting.",
+                tags: ["Socket.io", "CodeMirror", "Express"],
+                icon: "fas fa-code-branch"
+            }
+        ];
+
+        const projectsGrid = document.getElementById('projectsGrid');
+        if(projectsGrid) {
+            projectsGrid.innerHTML = '';
+            projectsData.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <div class="project-img">
+                        <i class="${project.icon}" style="font-size: 3rem;"></i>
+                    </div>
+                    <div class="project-info">
+                        <h3>${project.title}</h3>
+                        <p>${project.description}</p>
+                        <div class="project-tags">
+                            ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                projectsGrid.appendChild(card);
+            });
+        }
+
+        // ---------- ACTIVE NAVIGATION LINK ON SCROLL (with intersection observer) ----------
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        function setActiveLink() {
+            let current = '';
+            const scrollPos = window.scrollY + 150;
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                if(scrollPos >= sectionTop && scrollPos < sectionBottom) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href').substring(1);
+                if(href === current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', setActiveLink);
+        window.addEventListener('load', setActiveLink);
+        
+        // smooth scroll for nav links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if(targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // ---------- CONTACT FORM HANDLER WITH TOAST & LOCAL STORAGE MOCK ----------
+        const contactForm = document.getElementById('contactForm');
+        const toast = document.getElementById('toastMsg');
+        let toastTimeout;
+        
+        function showToastMessage(message) {
+            if(toast) {
+                toast.textContent = message || "✨ Message received, Meet will reply soon!";
+                toast.style.opacity = '1';
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.style.opacity = '0';
+                }, 3000);
+            }
+        }
+        
+        if(contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('nameInput')?.value.trim();
+                const email = document.getElementById('emailInput')?.value.trim();
+                const message = document.getElementById('msgInput')?.value.trim();
+                
+                if(!name || !email) {
+                    showToastMessage("❌ Please provide name and email!");
+                    return;
+                }
+                if(!email.includes('@')) {
+                    showToastMessage("📧 Enter a valid email address!");
+                    return;
+                }
+                // Simulate sending data (console & local storage optional)
+                const formData = { name, email, message, date: new Date().toISOString() };
+                console.log("Contact form submitted by Meet P Asher portfolio:", formData);
+                // Show success toast with name
+                showToastMessage(`🎉 Thanks ${name}! Meet will reach out soon.`);
+                contactForm.reset();
+                // Optional: store last message for demo
+                localStorage.setItem('lastContactMsg', JSON.stringify(formData));
+            });
+        }
+        
+        // Bonus: add interactive hover effect for hero image & console welcome
+        console.log("%c✨ Meet P Asher Portfolio — Interactive experience ready", "color: #1f6e8c; font-size: 16px; font-weight: bold;");
+        
+        // Add typing effect on hero name (just subtle)
+        const heroTitle = document.querySelector('.hero-content h1');
+        if(heroTitle && !heroTitle.hasAttribute('data-typed')) {
+            // optional playful effect: just for delight, but not intrusive
+            const originalText = heroTitle.innerHTML;
+            // we keep as is. instead add a tiny tooltip.
+        }
+        
+        // animated counter for fun (simple hover detection on skills? not needed but polish)
+        const style = document.createElement('style');
+        style.textContent = `
+            .nav-link.active {
+                color: #1f6e8c !important;
+                border-bottom: 2px solid #1f6e8c;
+                padding-bottom: 4px;
+            }
+            .project-card {
+                transition: all 0.25s ease;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // add a floating year in footer dynamic? no needed, but adds update time
+        const footerYear = document.querySelector('.footer p');
+        if(footerYear) {
+            const currentYear = new Date().getFullYear();
+            footerYear.innerHTML = `© ${currentYear} Meet P Asher — Designed with <i class="fas fa-heart" style="color:#1f6e8c;"></i> & interactive JS`;
+        }
+    })();
+</script>
+</body>
+</html>
