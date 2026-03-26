@@ -9,10 +9,9 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-
 body{
     font-family:'Poppins',sans-serif;
-    background: linear-gradient(135deg,#0f172a,#020617);
+    background:#0f172a;
     color:#fff;
 }
 
@@ -21,149 +20,88 @@ nav{
     display:flex;
     justify-content:space-between;
     padding:20px 10%;
+    background:#0f172a;
     position:sticky;
     top:0;
-    backdrop-filter: blur(10px);
-    background: rgba(15,23,42,0.6);
 }
-nav h2{
-    color:#38bdf8;
-}
+nav h2{color:#38bdf8}
 nav a{
     margin-left:20px;
     color:#cbd5f5;
     text-decoration:none;
-    transition:0.3s;
-}
-nav a:hover{
-    color:#38bdf8;
 }
 
 /* HERO */
 .hero{
-    height:100vh;
+    height:90vh;
     display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
     text-align:center;
 }
-.hero h1{
-    font-size:3.5rem;
-}
-.hero span{
-    color:#38bdf8;
-}
-.hero p{
-    opacity:0.8;
-}
+.hero h1{font-size:3rem}
+.hero span{color:#38bdf8}
 
-/* BUTTON */
 .btn{
-    margin-top:25px;
-    padding:12px 30px;
-    background: linear-gradient(135deg,#38bdf8,#0ea5e9);
+    margin-top:20px;
+    padding:10px 25px;
+    background:#38bdf8;
     border:none;
     border-radius:30px;
     cursor:pointer;
-    font-weight:600;
-    transition:0.3s;
-}
-.btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 20px rgba(56,189,248,0.3);
 }
 
-/* SECTION */
-section{
-    padding:80px 10%;
-}
-.title{
-    text-align:center;
-    font-size:2.2rem;
-    margin-bottom:30px;
-}
+/* SECTIONS */
+section{padding:60px 10%}
+.title{font-size:2rem;margin-bottom:20px}
 
 /* SKILLS */
 .skills{
     display:flex;
-    justify-content:center;
+    gap:15px;
     flex-wrap:wrap;
-    gap:20px;
 }
 .skill{
-    padding:12px 25px;
-    border-radius:30px;
-    background: rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.1);
-    transition:0.3s;
-}
-.skill:hover{
-    background:#38bdf8;
-    color:#000;
-    transform:scale(1.1);
+    padding:10px 20px;
+    background:#1e293b;
+    border-radius:20px;
 }
 
 /* PROJECTS */
 .projects{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:25px;
+    gap:20px;
 }
 .card{
-    background: rgba(255,255,255,0.05);
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
-}
-.card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 20px 40px rgba(0,0,0,0.6);
-}
-.card h3{
-    color:#38bdf8;
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
 }
 
 /* CONTACT */
-form{
-    max-width:500px;
-    margin:auto;
-}
 input,textarea{
     width:100%;
-    padding:12px;
+    padding:10px;
     margin:10px 0;
-    border-radius:12px;
+    border-radius:10px;
     border:none;
-    background: rgba(255,255,255,0.05);
-    color:#fff;
-}
-input::placeholder,textarea::placeholder{
-    color:#aaa;
 }
 
-/* BUTTON */
 button{
-    width:100%;
-    padding:12px;
-    background: linear-gradient(135deg,#38bdf8,#0ea5e9);
+    background:#38bdf8;
     border:none;
-    border-radius:12px;
+    padding:10px;
+    border-radius:10px;
     cursor:pointer;
-    font-weight:600;
-    transition:0.3s;
-}
-button:hover{
-    transform:scale(1.05);
 }
 
 /* FOOTER */
 footer{
     text-align:center;
-    padding:25px;
+    padding:20px;
     background:#020617;
-    opacity:0.7;
 }
 </style>
 </head>
@@ -172,7 +110,7 @@ footer{
 
 <!-- NAVBAR -->
 <nav>
-    <h2>Meet.dev</h2>
+    <h2>Meet P Asher</h2>
     <div>
         <a href="#home">Home</a>
         <a href="#skills">Skills</a>
@@ -184,7 +122,7 @@ footer{
 <!-- HERO -->
 <div class="hero" id="home">
     <h1>Hi, I'm <span>Meet P Asher</span></h1>
-    <p>Frontend Developer | Creative Coder | Tech Enthusiast</p>
+    <p>Frontend Developer | Student | Tech Enthusiast</p>
     <button class="btn" onclick="scrollToContact()">Hire Me</button>
 </div>
 
@@ -232,14 +170,16 @@ footer{
 
 <!-- FOOTER -->
 <footer>
-    <p>© 2026 Meet P Asher | All Rights Reserved</p>
+    <p>© 2026 Raghu | All Rights Reserved</p>
 </footer>
 
-<!-- FIREBASE -->
+<!-- FIREBASE + JS -->
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
+// CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyBe1xZx1YKZIjvPy-jkpAwRzZxsQ_ZPCHk",
   authDomain: "meet-asher.firebaseapp.com",
@@ -250,38 +190,51 @@ const firebaseConfig = {
   appId: "1:635216816150:web:bdf109f6ba62620c81ad37"
 };
 
+// INIT
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// SCROLL
 window.scrollToContact = function(){
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
 }
 
-document.getElementById("form").addEventListener("submit", async function(e){
+// FORM SUBMIT
+const form = document.getElementById("form");
+const btn = document.getElementById("btn");
+
+form.addEventListener("submit", async function(e){
     e.preventDefault();
 
-    const name = name.value;
-    const email = email.value;
-    const message = message.value;
-    const btn = document.getElementById("btn");
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
 
     btn.innerText = "Sending...";
     btn.disabled = true;
 
     try {
         const newRef = push(ref(db, "contacts"));
-        await set(newRef, { name, email, message });
 
-        alert("✅ Message Saved!");
-        this.reset();
+        await set(newRef, {
+            name,
+            email,
+            message,
+            time: new Date().toISOString()
+        });
+
+        alert("✅ Message Saved in Firebase!");
+        form.reset();
 
     } catch(err) {
         alert("❌ Error: " + err.message);
+        console.error(err);
     }
 
     btn.innerText = "Send Message";
     btn.disabled = false;
 });
+
 </script>
 
 </body>
